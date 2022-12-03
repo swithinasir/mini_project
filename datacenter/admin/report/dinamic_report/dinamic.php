@@ -1,0 +1,157 @@
+<?php
+session_start();
+include("../../../conn/config.php");
+?>
+
+<html>
+<head>
+
+<meta charset="utf-8">
+
+<script>
+function compare1()
+{
+ var startDt = document.getElementById("from").value;
+var a = startDt;
+var text2 = "-06-01";
+var a = a.concat("",text2);
+var date1 = new Date(a);
+var today = new Date();
+if((date1 < today)) 
+{	
+	 document.getElementById('message1').style.display="none";
+	return( true );
+}
+else
+{
+	 document.getElementById('message1').style.display="block";
+		document.getElementById('message1').innerHTML="Invalid Year";
+		return false;
+}
+   }
+function compare()
+{
+    var startDt = document.getElementById("from").value;
+    var endDt = document.getElementById("to").value;
+var a = startDt;
+var text2 = "-06-01";
+var a = a.concat("",text2);
+var startDt = new Date(a);
+var b = endDt ;
+var text3 = "-05-31";
+var b = b.concat("",text3);
+var endDt = new Date(b);
+		if( startDt < endDt)
+		{
+			document.getElementById('message').style.display="none";
+	return( true );
+		}
+		else
+		{
+			document.getElementById('message').style.display="block";
+			document.getElementById('message').innerHTML="Invalid Year";
+			return false;
+		}
+}
+function validate()
+{
+	var valid = true;
+	valid = valid && compare1();
+	valid = valid && compare();
+	 return valid;
+}
+ $('form').submit(validate);
+</script>
+<script language="Javascript">
+function hideAB()
+{  
+    document.getElementById("A").style.display="none"; 
+	document.getElementById("B").style.display="none"; 
+ document.getElementById("AB").style.display="none"; 	
+}
+function hideA()
+{  
+document.getElementById("AB").style.display="block"; 
+    document.getElementById("A").style.display="block"; 
+	document.getElementById("B").style.display="none"; 	
+}
+
+function hideB()
+{
+	document.getElementById("AB").style.display="block"; 
+	document.getElementById("A").style.display="none"; 
+    document.getElementById("B").style.display="block";
+}
+</script>
+<link rel="stylesheet"  href="../style/style.css" />
+<script type= "text/javascript" src = "style/report.js"></script>
+</head>
+
+<body>
+   
+  <form class="modal-content animate" action="dinamic1.php" method="post" >
+
+    <div class="container">
+     
+	
+	<input type="radio" name="cat" value="all" onClick="hideAB()"> All <br>
+	<input type="radio" name="cat" value="dept"  onClick="hideA()"> Department <br>
+	<div style="display:none" id="AB">
+	<div style="display:none" id="A">
+ 
+	   <select name='dept'>
+      <?php
+$sql="SELECT * FROM dept";
+$result=mysqli_query($con,$sql);
+if ($result->num_rows > 0) {
+    // output data of each row
+    while($row = $result->fetch_assoc()) {
+		echo '<option value="'.$row['deptid'].'">'.$row['dept'].'</option>';
+    }	
+}
+?>
+</select>
+</div>
+<div style="display:none" id="B">
+
+      <input type="text" id="to" onFocus="this.value=''" placeholder="Staff ID" name="sid">
+</div>
+</div>
+ <label for="uname"><b>Dinamic Report</b></label>
+<select name="type[]" multiple="multiple">
+		<option value="dob">DOB</option>
+		<option value="doj">DOJ</option>
+		<option value="community">community</option>
+		<option value="gender">Gender</option>
+		<option value="mobile">Mobile</option>
+		<option value="aadhar">Aadhar Number</option>
+		<option value="mail">Mail ID</option>
+		<option value="google">google link</option>
+		<option value="exp">Total Experince</option>
+		<option value="inexp">Inhouse Experince</option>
+		<option value="Funded">Funded project</option>
+		<option value="book">Book publication</option>
+		<option value="journal">Journal publication </option>
+		<option value="conf">Conference</option>
+		<option value="atten">Program Attended</option>
+		<option value="workshop_att">Workshop Attended</option>
+		<option value="seminar_att">Seminar Attended</option>
+		<option value="fdp_att">FDP Attended</option>
+		<option value="sdp_att">SDP Attended</option>
+		<option value="training_att">Training Attended</option>
+		<option value="summerorwinter_att">Summer/Winter School Attended</option>
+		<option value="org">Program Organized</option>
+		<option value="sch">No of scholars</option>
+		<option value="awa">Awards</option>
+		<option value="mem">Membership</option>
+</select>
+	  <button type="submit" name="faculty_report">Generate Report</button>
+      
+    </div>
+	
+  </form>
+
+</body>
+
+	
+</html>

@@ -1,0 +1,81 @@
+<?php
+session_start();
+if(isset($_POST["login"])){
+$deptid=$_SESSION['deptid'];
+$aaa=$deptid."_fac";
+include("../conn/config.php");
+//check if form is submitted
+
+    $username =$_POST['username'];
+	$password =$_POST['password'];
+	
+	
+	$result = mysqli_query($con, "SELECT * FROM `$aaa` WHERE sid = '" . $username. "' and password = '" . $password . "'");
+
+	if(mysqli_num_rows($result)) {
+		
+		// $_SESSION['name']=$name;here session is used and value of $username store in $_SESSION.
+		 $row = $result->fetch_assoc();
+		  $_SESSION['sid']= $row["sid"];
+		 header("Location: fac_details.php");
+	} else {
+			echo '<script language="javascript">alert("Invalid Username or Password");</script>';
+				
+	}
+
+}
+
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Login V15</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+<!--===============================================================================================-->	
+	<link rel="icon" type="image/png" href="images/icons/favicon.ico"/>
+
+<!--===============================================================================================-->
+	<link rel="stylesheet" type="text/css" href="css/util.css">
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+<!--===============================================================================================-->
+</head>
+<body>
+	
+	<div class="limiter">
+	
+		<div class="container-login100">
+		
+					<img <img width="90%" src="../images/header.jpg">
+			
+			<div class="wrap-login100">
+				
+
+				<form class="login100-form validate-form">
+					<div class="wrap-input100 validate-input m-b-26" data-validate="Username is required">
+						<span class="label-input100">Username</span>
+						<input class="input100" type="text" name="username" placeholder="Enter username">
+						<span class="focus-input100"></span>
+					</div>
+
+					<div class="wrap-input100 validate-input m-b-18" data-validate = "Password is required">
+						<span class="label-input100">Password</span>
+						<input class="input100" type="password" name="pass" placeholder="Enter password">
+						<span class="focus-input100"></span>
+					</div>
+
+					
+
+					<div class="container-login100-form-btn">
+						<button class="login100-form-btn">
+							Login
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+	
+
+</body>
+</html>
